@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"sync"
 	"time"
 
 	"github.com/alexedwards/scs"
@@ -21,16 +22,27 @@ const webPort = "80"
 func main() {
 	// connect to the database
 	db := initDB()
-	db.Ping()
 
 	// create sessions
 	session := initSession()
 
+	// create loggers
+	infolog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	errorlog := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+
 	// create channels
 
 	// create waitgroup
+	wg := sync.WaitGroup{}
 
 	// set up the application config
+	app := Config{
+		Session:  session,
+		DB:       db,
+		InfoLog:  infolog,
+		ErrorLog: errorlog,
+		Wait:     &wg,
+	}
 
 	// set up email
 
