@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"go_concurrency/data"
 	"log"
 	"net/http"
 	"os"
@@ -44,6 +45,7 @@ func main() {
 		InfoLog:  infolog,
 		ErrorLog: errorlog,
 		Wait:     &wg,
+		Models:   data.New(db),
 	}
 
 	// set up email
